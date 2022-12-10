@@ -38,7 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    //add new user
+    //add new user for signup
     public boolean addUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -57,7 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //find existing user for login
-    public boolean findUser(User user) {
+    public boolean findUserByUsernameAndPassword(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String query = "SELECT * FROM " + userTable
@@ -65,6 +65,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + user.getUsername()
                 + "\" and password = \""
                 + user.getPassword()
+                + "\";";
+
+        Boolean exists = false;
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()) {
+            exists = true;
+        }
+
+        cursor.close();
+        db.close();
+
+        return exists;
+    }
+
+    public boolean findUserByUsername(String username) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "SELECT * FROM " + userTable
+                + " WHERE username = \""
+                + username
                 + "\";";
 
         Boolean exists = false;

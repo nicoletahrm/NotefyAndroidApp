@@ -7,9 +7,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapp.Models.User;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -18,6 +22,10 @@ public class SignupActivity extends AppCompatActivity {
     private EditText confirmPasswordEditText;
     private Button toLoginButton;
     private Button signupButton;
+
+    private boolean isAllFieldsChecked = false;
+
+    DatabaseHelper dbHelper = new DatabaseHelper(SignupActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,18 +43,23 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                try {
-                    user = new User(1, usernameEditText.getText().toString(), passwordEditText.getText().toString());
-                    Toast.makeText(SignupActivity.this, user.toString(), Toast.LENGTH_LONG).show();
-                } catch (Exception e) {
-                    Toast.makeText(SignupActivity.this, "Error", Toast.LENGTH_LONG).show();
-                    user = new User(-1, "error", "error");
+
+                isAllFieldsChecked = CheckAllFields();
+
+                if (isAllFieldsChecked) {
+                    try {
+                        user = new User(1, usernameEditText.getText().toString(), passwordEditText.getText().toString());
+                        Toast.makeText(SignupActivity.this, user.toString(), Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(SignupActivity.this, "Error", Toast.LENGTH_LONG).show();
+                        user = new User(-1, "error", "error");
+                    }
+
+                    DatabaseHelper databaseHelper = new DatabaseHelper(SignupActivity.this);
+
+                    boolean success = databaseHelper.addUser(user);
+                    Toast.makeText(SignupActivity.this, "Success = " + success, Toast.LENGTH_LONG).show();
                 }
-
-                DatabaseHelper databaseHelper = new DatabaseHelper(SignupActivity.this);
-
-                boolean success = databaseHelper.addUser(user);
-                Toast.makeText(SignupActivity.this, "Success = " + success, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -59,7 +72,34 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    private void validate(String username, String password) {
+    //TODO: all validation for password woth regex
+    private boolean CheckAllFields() {
+        String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
+        Pattern pattern = Pattern.compile(passwordPattern);
+        Matcher matcher = pattern.matcher(passwordEditText.getText().toString());
 
+        if (usernameEditText.length() == 0) {
+            usernameEditText.setError("This field is required");
+            return false;
+        }
+        else if(dbHelper.findUserByUsername(usernameEditText.getText().toString())) {
+                usernameEditText.setError("Username already exist");
+                return false;
+        }
+
+        if (passwordEditText.length() == 0) {
+            passwordEditText.setError("Password is required");
+            return false;
+        }
+        // else if (passwordEditText.length() < 8) {
+//            passwordEditText.setError("Password must be minimum 8 characters");
+//            return false;
+//        }
+        else if(passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())) {
+            passwordEditText.setError("Passwords doesn't match");
+            return false;
+        }
+
+        return true;
     }
 }

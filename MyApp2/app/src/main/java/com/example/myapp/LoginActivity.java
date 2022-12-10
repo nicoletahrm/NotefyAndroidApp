@@ -28,18 +28,17 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         toSignupButton = findViewById(R.id.toSignupButton);
 
-        //TODO: validari user
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                DatabaseHelper dbHelper = new DatabaseHelper(LoginActivity.this);
+                //DatabaseHelper dbHelper = new DatabaseHelper(LoginActivity.this);
 
                 User user = new User();
                 user.setUsername(usernameEditText.getText().toString());
                 user.setPassword(passwordEditText.getText().toString());
 
-                if(dbHelper.findUser(user)) {
+                if(userValidation(user)) {
                     Intent myIntent = new Intent(LoginActivity.this, HomeActivity.class);
                     myIntent.putExtra("username", usernameEditText.getText().toString());
                     Toast.makeText(getApplicationContext(),"You are connected", Toast.LENGTH_SHORT).show();
@@ -60,8 +59,23 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void validate(String username, String password) {
+    private Boolean userValidation(User user) {
+        DatabaseHelper dbHelper = new DatabaseHelper(LoginActivity.this);
 
+        if(user.getUsername().length() == 0) {
+            usernameEditText.setError("This field is required");
+            return false;
+        }
+        else if(!dbHelper.findUserByUsername(user.getUsername())) {
+            usernameEditText.setError("Invalid username");
+            return false;
+        }
+
+        if(!dbHelper.findUserByUsernameAndPassword(user)) {
+            passwordEditText.setError("Invalid password");
+            return false;
+        }
+
+        return true;
     }
-
 }
