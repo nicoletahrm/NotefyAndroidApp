@@ -31,8 +31,10 @@
             android:text="Create" />
 
         <ListView
+            android:id="@+id/notesListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:clickable="true"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

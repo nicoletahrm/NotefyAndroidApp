@@ -5,11 +5,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.ContactsContract;
 
 import androidx.annotation.Nullable;
 
 import com.example.myapp.Models.Note;
 import com.example.myapp.Models.User;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -128,5 +133,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return exists;
+    }
+
+    public ArrayList<Note> getAllNotes() {
+
+        ArrayList<Note> notes = new ArrayList<Note>();
+
+        String query =
+                "SELECT * FROM "
+                + NOTE_TABLE
+                + ";";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                String noteTitle = cursor.getString(1);
+                String noteContent = cursor.getString(2);
+                String noteDate = cursor.getString(3);
+
+                Note note = new Note(noteTitle, noteContent, noteDate);
+                notes.add(note);
+
+            }while(cursor.moveToNext());
+        }
+        else {
+        }
+
+        cursor.close();
+        db.close();
+
+        return notes;
     }
 }
