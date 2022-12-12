@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapp.Models.Note;
+import com.example.myapp.Models.User;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,11 +30,14 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
 
         helloUserTextView = findViewById(R.id.helloUserTextView);
 
-        Intent intent = getIntent();
-        helloUserTextView.setText("Hello " + intent.getStringExtra("username") + "!");
-
         notesListView = findViewById(R.id.notesListView);
         createNoteButton = findViewById(R.id.createNoteButton);
+
+        Intent intent = getIntent();
+//      User u = intent.getParcelableExtra("user");
+//      helloUserTextView.setText("Hello " + u.getUsername() + "!");
+        helloUserTextView.setText("Hello " + intent.getStringExtra("username") + "!");
+
 
         createNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,12 +50,9 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
         DatabaseHelper dbHelper = new DatabaseHelper(HomeActivity.this);
 
         ArrayList<Note> notes = dbHelper.getAllNotes();
-
-        ArrayAdapter<Note> arrayAdapter = new ArrayAdapter<Note>
-                (this, android.R.layout.simple_list_item_1, notes);
+        ArrayAdapter<Note> arrayAdapter = new ArrayAdapter<Note>(this, android.R.layout.simple_list_item_1, notes);
 
         notesListView.setAdapter(arrayAdapter);
         arrayAdapter.notifyDataSetChanged();
-
     }
 }

@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.myapp.Models.User;
+
+import java.io.Serializable;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -41,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
                 if(userValidation(user)) {
                     Intent myIntent = new Intent(LoginActivity.this, HomeActivity.class);
                     myIntent.putExtra("username", usernameEditText.getText().toString());
+                    //myIntent.putExtra("user", (Parcelable) user);
+
                     Toast.makeText(getApplicationContext(),"You are connected", Toast.LENGTH_SHORT).show();
                     startActivity(myIntent);
                 }

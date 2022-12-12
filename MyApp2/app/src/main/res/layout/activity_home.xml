@@ -7,8 +7,8 @@
     tools:context=".HomeActivity">
 
     <LinearLayout
-        android:layout_width="409dp"
-        android:layout_height="729dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,17 +24,19 @@
             android:textAlignment="center"
             android:textSize="34sp" />
 
+        <ListView
+            android:id="@+id/notesListView"
+            android:layout_width="match_parent"
+            android:layout_height="608dp" />
+
         <Button
             android:id="@+id/createNoteButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create" />
-
-        <ListView
-            android:id="@+id/notesListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="true"/>
+            android:insetLeft="150dp"
+            android:insetRight="150dp"
+            android:text="Create"
+            android:textAlignment="center" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
