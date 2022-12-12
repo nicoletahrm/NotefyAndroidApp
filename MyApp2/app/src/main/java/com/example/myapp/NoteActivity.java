@@ -26,7 +26,7 @@ public class NoteActivity extends AppCompatActivity {
 
     public String currentDateToString() {
         Date currentDate = Calendar.getInstance().getTime();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         return dateFormat.format(currentDate);
     }
 }
