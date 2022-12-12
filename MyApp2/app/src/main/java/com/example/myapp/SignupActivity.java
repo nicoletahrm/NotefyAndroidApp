@@ -49,7 +49,7 @@ public class SignupActivity extends AppCompatActivity {
                 if (isAllFieldsChecked) {
                     try {
                         user = new User(1, usernameEditText.getText().toString(), passwordEditText.getText().toString());
-                        Toast.makeText(SignupActivity.this, user.toString(), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(SignupActivity.this, user.toString(), Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Toast.makeText(SignupActivity.this, "Error", Toast.LENGTH_LONG).show();
                         user = new User(-1, "error", "error");
@@ -58,7 +58,11 @@ public class SignupActivity extends AppCompatActivity {
                     DatabaseHelper databaseHelper = new DatabaseHelper(SignupActivity.this);
 
                     boolean success = databaseHelper.addUser(user);
+
                     Toast.makeText(SignupActivity.this, "Success = " + success, Toast.LENGTH_LONG).show();
+
+                    Intent myIntent = new Intent(SignupActivity.this, LoginActivity.class);
+                    startActivity(myIntent);
                 }
             }
         });
@@ -95,10 +99,10 @@ public class SignupActivity extends AppCompatActivity {
 //            passwordEditText.setError("Password must be minimum 8 characters");
 //            return false;
 //        }
-        else if(passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())) {
-            passwordEditText.setError("Passwords doesn't match");
-            return false;
-        }
+//        else if(passwordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString())) {
+//            passwordEditText.setError("Passwords doesn't match");
+//            return false;
+//        }
 
         return true;
     }

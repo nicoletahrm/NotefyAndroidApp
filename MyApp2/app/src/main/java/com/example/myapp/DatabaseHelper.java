@@ -8,66 +8,95 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.myapp.Models.Note;
 import com.example.myapp.Models.User;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String userTable = "user";
-    public static final String usernameColumn = "username";
-    public static final String passwordColumn = "password";
+    public static final String DB_NAME = "notes.dp";
+    public static final int DB_VERSION = 1;
+
+    public static final String USER_TABLE = "user";
+    public static final String USERNAME_COLUMN = "username";
+    public static final String PASSWORD_COLUMN = "password";
+
+    public static final String NOTE_TABLE = "note";
+    public static final String TITLE_COLUMN = "title";
+    public static final String CONTENT_COLUMN = "content";
+    public static final String DATE_COLUMN = "date";
+    //public static final Boolean IS_PINNED_COLUMN = "isPinned";
 
     public DatabaseHelper(@Nullable Context context) {
-        super(context, "app_db", null, 1);
+        super(context, DB_NAME, null, DB_VERSION);
     }
 
     //create database one time
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableStatement =
-                "CREATE TABLE " + userTable
+        String createUserTable =
+                "CREATE TABLE " + USER_TABLE
                         + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + usernameColumn + " TEXT, "
-                        + passwordColumn + " TEXT);";
+                        + USERNAME_COLUMN + " TEXT, "
+                        + PASSWORD_COLUMN + " TEXT);";
 
-        db.execSQL(createTableStatement);
+        String createNoteTable =
+                "CREATE TABLE " + NOTE_TABLE
+                + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + TITLE_COLUMN + " TEXT, "
+                + CONTENT_COLUMN + " TEXT, "
+                + DATE_COLUMN + " TEXT);";
+
+        db.execSQL(createUserTable);
+        db.execSQL(createNoteTable);
     }
 
     //update database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + NOTE_TABLE);
+        onCreate(db);
     }
 
     //add new user for signup
     public boolean addUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
+        ContentValues cvUser = new ContentValues();
 
-        cv.put(usernameColumn, user.getUsername());
-        cv.put(passwordColumn, user.getPassword());
+        cvUser.put(USERNAME_COLUMN, user.getUsername());
+        cvUser.put(PASSWORD_COLUMN, user.getPassword());
 
-        long insert = db.insert(userTable, null, cv);
+        long insert = db.insert(USER_TABLE, null, cvUser);
 
-        if(insert == -1) {
-            return false;
-        }
-        else {
-            return true;
-        }
+        return insert != -1;
+    }
+
+    //add new user for signup
+    public boolean addNote(Note note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cvNote = new ContentValues();
+
+        cvNote.put(TITLE_COLUMN, note.getTitle());
+        cvNote.put(CONTENT_COLUMN, note.getContent());
+        cvNote.put(DATE_COLUMN, note.getDate());
+
+        long insert = db.insert(NOTE_TABLE, null, cvNote);
+
+        return insert != -1;
     }
 
     //find existing user for login
     public boolean findUserByUsernameAndPassword(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String query = "SELECT * FROM " + userTable
+        String query = "SELECT * FROM " + USER_TABLE
                 + " WHERE username = \""
                 + user.getUsername()
                 + "\" and password = \""
                 + user.getPassword()
                 + "\";";
 
-        Boolean exists = false;
+        boolean exists = false;
         Cursor cursor = db.rawQuery(query, null);
 
         if(cursor.moveToFirst()) {
@@ -83,12 +112,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean findUserByUsername(String username) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String query = "SELECT * FROM " + userTable
+        String query = "SELECT * FROM " + USER_TABLE
                 + " WHERE username = \""
                 + username
                 + "\";";
 
-        Boolean exists = false;
+        boolean exists = false;
         Cursor cursor = db.rawQuery(query, null);
 
         if(cursor.moveToFirst()) {
