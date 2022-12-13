@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".SignupActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
     <EditText
         android:id="@+id/usernameEditText"
         android:layout_width="wrap_content"

@@ -167,4 +167,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return notes;
     }
+
+    public Note getNoteById(int noteId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "SELECT * FROM " + NOTE_TABLE
+                + " WHERE id = "
+                + noteId
+                + ";";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        String noteTitle = cursor.getString(1);
+        String noteContent = cursor.getString(2);
+        String noteDate = cursor.getString(3);
+
+        Note note = new Note(noteTitle, noteContent, noteDate);
+
+        return note;
+    }
 }

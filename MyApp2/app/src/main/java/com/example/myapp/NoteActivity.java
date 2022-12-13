@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapp.Models.Note;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -54,6 +55,14 @@ public class NoteActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        //de pus intr o metoda + sa se dea update al note, nu save
+        Intent intent = getIntent();
+        Note note = (Note)intent.getParcelableExtra("note");
+        titleEditText.setText(note.getTitle());
+        contentEditText.setText(note.getContent());
+        dateTextView.setText(currentDate);
+
     }
 
     public String currentDateToString() {

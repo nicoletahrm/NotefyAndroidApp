@@ -2,11 +2,14 @@ package com.example.myapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -52,5 +55,18 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
 
         notesListView.setAdapter(arrayAdapter);
         arrayAdapter.notifyDataSetChanged();
+
+        notesListView.getSelectedItemId();
+
+        notesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Note selectedNote=(Note) adapterView.getItemAtPosition(i);
+
+                Intent myIntent = new Intent(HomeActivity.this, NoteActivity.class);
+                myIntent.putExtra("note", selectedNote);
+                startActivity(myIntent);
+            }
+        });
     }
 }
