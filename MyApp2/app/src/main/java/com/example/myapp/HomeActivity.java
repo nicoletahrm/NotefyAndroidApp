@@ -2,7 +2,6 @@ package com.example.myapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapp.Models.Note;
-import com.example.myapp.Models.User;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,7 +24,7 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.home);
 
         helloUserTextView = findViewById(R.id.helloUserTextView);
 

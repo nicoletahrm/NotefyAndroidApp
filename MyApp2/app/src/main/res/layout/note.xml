@@ -52,7 +52,7 @@
 
         <Button
             android:id="@+id/saveNoteButton"
-            android:layout_width="419dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:insetLeft="150dp"
             android:insetRight="150dp"
