@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,17 +32,13 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //DatabaseHelper dbHelper = new DatabaseHelper(LoginActivity.this);
-
                 User user = new User();
                 user.setUsername(usernameEditText.getText().toString());
                 user.setPassword(passwordEditText.getText().toString());
 
                 if(userValidation(user)) {
                     Intent myIntent = new Intent(LoginActivity.this, HomeActivity.class);
-                    myIntent.putExtra("username", usernameEditText.getText().toString());
-                    //myIntent.putExtra("user", (Parcelable) user);
+                    myIntent.putExtra("user", (Parcelable) user);
 
                     Toast.makeText(getApplicationContext(),"You are connected", Toast.LENGTH_SHORT).show();
                     startActivity(myIntent);

@@ -77,7 +77,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //add new user for signup
-    public boolean addNote(Note note) {
+    public void addNote(Note note) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cvNote = new ContentValues();
 
@@ -87,10 +87,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         long insert = db.insert(NOTE_TABLE, null, cvNote);
 
-        return insert != -1;
+        //return insert != -1;
     }
 
-    //find existing user for login
+    //find existing user for login with username and password
     public boolean findUserByUsernameAndPassword(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -114,6 +114,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return exists;
     }
 
+    //find existing user with username
     public boolean findUserByUsername(String username) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -135,6 +136,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return exists;
     }
 
+    //return notes list
     public ArrayList<Note> getAllNotes() {
 
         ArrayList<Note> notes = new ArrayList<Note>();
@@ -150,11 +152,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if(cursor.moveToFirst()) {
             do {
+                Integer noteId = cursor.getInt(0);
                 String noteTitle = cursor.getString(1);
                 String noteContent = cursor.getString(2);
                 String noteDate = cursor.getString(3);
 
-                Note note = new Note(noteTitle, noteContent, noteDate);
+                Note note = new Note(noteId, noteTitle, noteContent, noteDate);
                 notes.add(note);
 
             }while(cursor.moveToNext());
@@ -168,22 +171,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return notes;
     }
 
-    public Note getNoteById(int noteId) {
+    public boolean updateNote(String noteTitle, String noteContent, String noteDate) {
         SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
 
-        String query = "SELECT * FROM " + NOTE_TABLE
-                + " WHERE id = "
-                + noteId
-                + ";";
+        cv.put(TITLE_COLUMN, noteTitle);
+        cv.put(CONTENT_COLUMN, noteContent);
+        cv.put(DATE_COLUMN, noteDate);
 
-        Cursor cursor = db.rawQuery(query, null);
+        long update = db.update(NOTE_TABLE, cv, "TITLE_COLUMN=?", new String[] { noteTitle} );
 
-        String noteTitle = cursor.getString(1);
-        String noteContent = cursor.getString(2);
-        String noteDate = cursor.getString(3);
+        db.close();
 
-        Note note = new Note(noteTitle, noteContent, noteDate);
-
-        return note;
+        return update == -1;
     }
 }

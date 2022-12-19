@@ -7,6 +7,7 @@ import java.util.Date;
 
 public class Note implements Parcelable {
 
+    private Integer id;
     private String title;
     private String content;
     private String date;
@@ -16,13 +17,15 @@ public class Note implements Parcelable {
 
     }
 
-    public Note(String title, String content, String date) {
+    public Note(Integer id, String title, String content, String date) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.date = date;
     }
 
     protected Note(Parcel in) {
+        id = in.readInt();
         title = in.readString();
         content = in.readString();
         date = in.readString();
@@ -39,6 +42,10 @@ public class Note implements Parcelable {
             return new Note[size];
         }
     };
+
+    public Integer getId() {
+        return id;
+    }
 
     public String getTitle() {
         return title;
@@ -67,6 +74,7 @@ public class Note implements Parcelable {
     @Override
     public String toString() {
         return "Note{" +
+                "id=" + id + '\'' +
                 "title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", date=" + date +
@@ -80,6 +88,7 @@ public class Note implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(title);
         dest.writeString(content);
         dest.writeString(date);

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapp.Models.Note;
+import com.example.myapp.Models.User;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
     private TextView helloUserTextView;
     private ListView notesListView;
     private Button createNoteButton;
+    public Boolean isNoteSelected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +37,8 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
         createNoteButton = findViewById(R.id.createNoteButton);
 
         Intent intent = getIntent();
-//      User u = intent.getParcelableExtra("user");
-//      helloUserTextView.setText("Hello " + u.getUsername() + "!");
-        helloUserTextView.setText("Hello " + intent.getStringExtra("username") + "!");
-
+        User u = (User)intent.getParcelableExtra("user");
+        helloUserTextView.setText(String.format("Hello %s!", u.getUsername()));
 
         createNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,15 +56,17 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
         notesListView.setAdapter(arrayAdapter);
         arrayAdapter.notifyDataSetChanged();
 
-        notesListView.getSelectedItemId();
+        //notesListView.getSelectedItemId();
 
         notesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Note selectedNote=(Note) adapterView.getItemAtPosition(i);
-
+                Note selectedNote = (Note) adapterView.getItemAtPosition(i);
                 Intent myIntent = new Intent(HomeActivity.this, NoteActivity.class);
-                myIntent.putExtra("note", selectedNote);
+
+                isNoteSelected = true;
+                myIntent.putExtra("note", (Parcelable) selectedNote);
+                myIntent.putExtra("isNoteSelected", isNoteSelected);
                 startActivity(myIntent);
             }
         });

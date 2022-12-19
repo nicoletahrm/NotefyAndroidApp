@@ -47,11 +47,11 @@ public class SignupActivity extends AppCompatActivity {
 
                 if (isAllFieldsChecked) {
                     try {
-                        user = new User(1, usernameEditText.getText().toString(), passwordEditText.getText().toString());
+                        user = new User(usernameEditText.getText().toString(), passwordEditText.getText().toString());
                         //Toast.makeText(SignupActivity.this, user.toString(), Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Toast.makeText(SignupActivity.this, "Error", Toast.LENGTH_LONG).show();
-                        user = new User(-1, "error", "error");
+                        user = new User("error", "error");
                     }
 
                     DatabaseHelper databaseHelper = new DatabaseHelper(SignupActivity.this);

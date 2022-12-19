@@ -1,7 +1,9 @@
 package com.example.myapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapp.Models.Note;
 
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,39 +36,48 @@ public class NoteActivity extends AppCompatActivity {
         saveNoteButton = findViewById(R.id.saveNoteButton);
 
         String currentDate = currentDateToString();
-
         dateTextView.setText(currentDate);
 
-        saveNoteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        Intent myIntent = getIntent();
 
-                DatabaseHelper dbHelper = new DatabaseHelper(NoteActivity.this);
+        Note note = (Note)myIntent.getParcelableExtra("note");
+        boolean isNoteSelcted = (boolean)myIntent.getBooleanExtra("isNoteSelected", false);
 
-                Note newNote = new Note();
-                newNote.setTitle(titleEditText.getText().toString());
-                newNote.setContent(contentEditText.getText().toString());
-                newNote.setDate(currentDate);
-
-                dbHelper.addNote(newNote);
-
-                Intent intent = new Intent(NoteActivity.this, HomeActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //de pus intr o metoda + sa se dea update al note, nu save
-        Intent intent = getIntent();
-        Note note = (Note)intent.getParcelableExtra("note");
         titleEditText.setText(note.getTitle());
         contentEditText.setText(note.getContent());
         dateTextView.setText(currentDate);
 
+        Log.d("notita", note.toString());
+
+        saveNoteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseHelper dbHelper = new DatabaseHelper(NoteActivity.this);
+
+                Intent intent = new Intent(NoteActivity.this, HomeActivity.class);
+
+                if (isNoteSelcted) {
+
+                    dbHelper.updateNote(titleEditText.getText().toString(), contentEditText.getText().toString(), dateTextView.getText().toString());
+
+                } else {
+                    Note newNote = new Note();
+
+                    newNote.setTitle(titleEditText.getText().toString());
+                    newNote.setContent(contentEditText.getText().toString());
+                    newNote.setDate(currentDate);
+
+                    dbHelper.addNote(newNote);
+                }
+
+                startActivity(intent);
+            }
+        });
     }
 
     public String currentDateToString() {
         Date currentDate = Calendar.getInstance().getTime();
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         return dateFormat.format(currentDate);
     }
 }
