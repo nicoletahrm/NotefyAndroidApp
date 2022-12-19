@@ -31,7 +31,8 @@
             android:gravity="top|left"
             android:hint="Write something..."
             android:inputType="textPersonName"
-            android:singleLine="false" />
+            android:singleLine="false"
+            android:textColorHint="#757575" />
 
         <TextView
             android:id="@+id/dateTextView"

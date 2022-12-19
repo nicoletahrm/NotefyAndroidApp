@@ -171,7 +171,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return notes;
     }
 
-    public boolean updateNote(String noteTitle, String noteContent, String noteDate) {
+    //update a note
+    public boolean updateNote(Integer noteId, String noteTitle, String noteContent, String noteDate) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -179,7 +180,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(CONTENT_COLUMN, noteContent);
         cv.put(DATE_COLUMN, noteDate);
 
-        long update = db.update(NOTE_TABLE, cv, "TITLE_COLUMN=?", new String[] { noteTitle} );
+        long update = db.update(NOTE_TABLE, cv, "ID=?", new String[] { noteId.toString()} );
 
         db.close();
 

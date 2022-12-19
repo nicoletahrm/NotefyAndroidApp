@@ -24,7 +24,6 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
     private TextView helloUserTextView;
     private ListView notesListView;
     private Button createNoteButton;
-    public Boolean isNoteSelected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +43,9 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(HomeActivity.this, NoteActivity.class);
+                myIntent.putExtra("isNoteSelected", false);
+                myIntent.putExtra("createButtonClick", true);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
                 startActivity(myIntent);
             }
         });
@@ -56,17 +58,16 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
         notesListView.setAdapter(arrayAdapter);
         arrayAdapter.notifyDataSetChanged();
 
-        //notesListView.getSelectedItemId();
-
         notesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Note selectedNote = (Note) adapterView.getItemAtPosition(i);
                 Intent myIntent = new Intent(HomeActivity.this, NoteActivity.class);
 
-                isNoteSelected = true;
                 myIntent.putExtra("note", (Parcelable) selectedNote);
-                myIntent.putExtra("isNoteSelected", isNoteSelected);
+                myIntent.putExtra("isNoteSelected", true);
+                myIntent.putExtra("createButtonClick", false);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
                 startActivity(myIntent);
             }
         });

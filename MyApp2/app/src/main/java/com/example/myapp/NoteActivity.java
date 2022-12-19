@@ -40,26 +40,28 @@ public class NoteActivity extends AppCompatActivity {
 
         Intent myIntent = getIntent();
 
-        Note note = (Note)myIntent.getParcelableExtra("note");
-        boolean isNoteSelcted = (boolean)myIntent.getBooleanExtra("isNoteSelected", false);
+        boolean isNoteSelected = (boolean)myIntent.getBooleanExtra("isNoteSelected", false);
+        Note note = (Note) myIntent.getParcelableExtra("note");
 
-        titleEditText.setText(note.getTitle());
-        contentEditText.setText(note.getContent());
-        dateTextView.setText(currentDate);
+        if(isNoteSelected) {
+            titleEditText.setText(note.getTitle());
+            contentEditText.setText(note.getContent());
+            dateTextView.setText(currentDate);
 
-        Log.d("notita", note.toString());
+            Log.d("notita", note.toString());
+            Log.d("notitaid", note.getId().toString());
+        }
+
+        String s = Boolean.valueOf(isNoteSelected).toString();
+        Log.d("isNoteSelected", s);
 
         saveNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DatabaseHelper dbHelper = new DatabaseHelper(NoteActivity.this);
 
-                Intent intent = new Intent(NoteActivity.this, HomeActivity.class);
-
-                if (isNoteSelcted) {
-
-                    dbHelper.updateNote(titleEditText.getText().toString(), contentEditText.getText().toString(), dateTextView.getText().toString());
-
+                if (isNoteSelected) {
+                    dbHelper.updateNote(note.getId(), titleEditText.getText().toString(), contentEditText.getText().toString(), dateTextView.getText().toString());
                 } else {
                     Note newNote = new Note();
 
@@ -70,6 +72,7 @@ public class NoteActivity extends AppCompatActivity {
                     dbHelper.addNote(newNote);
                 }
 
+                Intent intent = new Intent(NoteActivity.this, HomeActivity.class);
                 startActivity(intent);
             }
         });
