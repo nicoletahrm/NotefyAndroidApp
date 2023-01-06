@@ -21,7 +21,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TITLE_COLUMN = "title";
     public static final String CONTENT_COLUMN = "content";
     public static final String DATE_COLUMN = "date";
-    //public static final Boolean IS_PINNED_COLUMN = "isPinned";
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -106,10 +105,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(CONTENT_COLUMN, noteContent);
         cv.put(DATE_COLUMN, noteDate);
 
-        long update = db.update(NOTE_TABLE, cv, "ID=?", new String[] { noteId.toString()} );
+        long update = db.update(NOTE_TABLE, cv, "ID=?", new String[] { noteId.toString() } );
 
         db.close();
 
         return update == -1;
+    }
+
+    //delete a note
+    public boolean deleteNote(Integer noteId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        long delete = db.delete(NOTE_TABLE, "ID=?", new String[]{ noteId.toString() } );
+
+        db.close();
+
+        return delete == -1;
     }
 }

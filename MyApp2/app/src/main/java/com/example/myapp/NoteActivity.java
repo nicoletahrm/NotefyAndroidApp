@@ -3,6 +3,7 @@ package com.example.myapp;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +33,7 @@ public class NoteActivity extends AppCompatActivity {
 
         titleEditText = findViewById(R.id.titleEditText);
         contentEditText = findViewById(R.id.contentEditText);
+        contentEditText.setInputType(InputType.TYPE_CLASS_TEXT);
         dateTextView = findViewById(R.id.dateTextView);
         saveNoteButton = findViewById(R.id.saveNoteButton);
 
@@ -48,9 +50,6 @@ public class NoteActivity extends AppCompatActivity {
             contentEditText.setText(note.getContent());
             dateTextView.setText(currentDate);
         }
-
-        String s = Boolean.valueOf(isNoteSelected).toString();
-        Log.d("isNoteSelected", s);
 
         saveNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
