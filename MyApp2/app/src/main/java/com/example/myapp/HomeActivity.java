@@ -28,6 +28,8 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
     private ListView notesListView;
     private Button createNoteButton;
 
+    private DatabaseHelper dbHelper = new DatabaseHelper(HomeActivity.this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +51,6 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
             }
         });
 
-        DatabaseHelper dbHelper = new DatabaseHelper(HomeActivity.this);
-
         ArrayList<Note> notes = dbHelper.getAllNotes();
         ArrayAdapter<Note> arrayAdapter = new ArrayAdapter<Note>(this, android.R.layout.simple_list_item_1, notes);
 
@@ -69,6 +69,7 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
 
                 myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
 
+                finish();
                 startActivity(myIntent);
             }
         });
@@ -77,7 +78,6 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-
         getMenuInflater().inflate(R.menu.note_menu, menu);
     }
 
@@ -86,10 +86,7 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
         switch (item.getItemId()) {
             case R.id.delete:
 
-                DatabaseHelper dbHelper = new DatabaseHelper(HomeActivity.this);
-
                 ArrayList<Note> notes = dbHelper.getAllNotes();
-                ArrayAdapter<Note> arrayAdapter = new ArrayAdapter<Note>(this, android.R.layout.simple_list_item_1, notes);
 
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 int position = info.position;
@@ -99,10 +96,15 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
 
                 dbHelper.deleteNote(note.getId());
 
+                Intent i = new Intent(HomeActivity.this, HomeActivity.class);
+
+                finish();
+                overridePendingTransition(0, 0);
+                startActivity(i);
+
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
-
 }
