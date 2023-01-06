@@ -5,25 +5,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.ContactsContract;
 
 import androidx.annotation.Nullable;
 
 import com.example.myapp.Models.Note;
-import com.example.myapp.Models.User;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "notes.dp";
     public static final int DB_VERSION = 1;
-
-    public static final String USER_TABLE = "user";
-    public static final String USERNAME_COLUMN = "username";
-    public static final String PASSWORD_COLUMN = "password";
 
     public static final String NOTE_TABLE = "note";
     public static final String TITLE_COLUMN = "title";
@@ -38,11 +30,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //create database one time
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createUserTable =
-                "CREATE TABLE " + USER_TABLE
-                        + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + USERNAME_COLUMN + " TEXT, "
-                        + PASSWORD_COLUMN + " TEXT);";
 
         String createNoteTable =
                 "CREATE TABLE " + NOTE_TABLE
@@ -51,29 +38,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + CONTENT_COLUMN + " TEXT, "
                 + DATE_COLUMN + " TEXT);";
 
-        db.execSQL(createUserTable);
         db.execSQL(createNoteTable);
     }
 
     //update database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + NOTE_TABLE);
         onCreate(db);
-    }
-
-    //add new user for signup
-    public boolean addUser(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cvUser = new ContentValues();
-
-        cvUser.put(USERNAME_COLUMN, user.getUsername());
-        cvUser.put(PASSWORD_COLUMN, user.getPassword());
-
-        long insert = db.insert(USER_TABLE, null, cvUser);
-
-        return insert != -1;
     }
 
     //add new user for signup
@@ -88,52 +60,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long insert = db.insert(NOTE_TABLE, null, cvNote);
 
         //return insert != -1;
-    }
-
-    //find existing user for login with username and password
-    public boolean findUserByUsernameAndPassword(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String query = "SELECT * FROM " + USER_TABLE
-                + " WHERE username = \""
-                + user.getUsername()
-                + "\" and password = \""
-                + user.getPassword()
-                + "\";";
-
-        boolean exists = false;
-        Cursor cursor = db.rawQuery(query, null);
-
-        if(cursor.moveToFirst()) {
-            exists = true;
-        }
-
-        cursor.close();
-        db.close();
-
-        return exists;
-    }
-
-    //find existing user with username
-    public boolean findUserByUsername(String username) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String query = "SELECT * FROM " + USER_TABLE
-                + " WHERE username = \""
-                + username
-                + "\";";
-
-        boolean exists = false;
-        Cursor cursor = db.rawQuery(query, null);
-
-        if(cursor.moveToFirst()) {
-            exists = true;
-        }
-
-        cursor.close();
-        db.close();
-
-        return exists;
     }
 
     //return notes list

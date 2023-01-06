@@ -47,9 +47,6 @@ public class NoteActivity extends AppCompatActivity {
             titleEditText.setText(note.getTitle());
             contentEditText.setText(note.getContent());
             dateTextView.setText(currentDate);
-
-            Log.d("notita", note.toString());
-            Log.d("notitaid", note.getId().toString());
         }
 
         String s = Boolean.valueOf(isNoteSelected).toString();
@@ -71,6 +68,8 @@ public class NoteActivity extends AppCompatActivity {
 
                     dbHelper.addNote(newNote);
                 }
+
+                finish();
 
                 Intent intent = new Intent(NoteActivity.this, HomeActivity.class);
                 startActivity(intent);

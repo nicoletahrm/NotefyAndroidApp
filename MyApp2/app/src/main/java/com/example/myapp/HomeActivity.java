@@ -9,19 +9,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapp.Models.Note;
-import com.example.myapp.Models.User;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity implements Serializable {
 
-    private TextView helloUserTextView;
     private ListView notesListView;
     private Button createNoteButton;
 
@@ -30,14 +27,8 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
 
-        helloUserTextView = findViewById(R.id.helloUserTextView);
-
         notesListView = findViewById(R.id.notesListView);
         createNoteButton = findViewById(R.id.createNoteButton);
-
-        Intent intent = getIntent();
-        User u = (User)intent.getParcelableExtra("user");
-        helloUserTextView.setText(String.format("Hello %s!", u.getUsername()));
 
         createNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +37,7 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
                 myIntent.putExtra("isNoteSelected", false);
                 myIntent.putExtra("createButtonClick", true);
                 myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                finish();
                 startActivity(myIntent);
             }
         });
@@ -68,6 +60,7 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
                 myIntent.putExtra("isNoteSelected", true);
                 myIntent.putExtra("createButtonClick", false);
                 myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                finish();
                 startActivity(myIntent);
             }
         });
