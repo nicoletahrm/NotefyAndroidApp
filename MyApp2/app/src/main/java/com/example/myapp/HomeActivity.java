@@ -3,18 +3,13 @@ package com.example.myapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.ContextMenu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -52,7 +47,7 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
         });
 
         ArrayList<Note> notes = dbHelper.getAllNotes();
-        ArrayAdapter<Note> arrayAdapter = new ArrayAdapter<Note>(this, android.R.layout.simple_list_item_1, notes);
+        ArrayAdapter<Note> arrayAdapter = new ArrayAdapter<Note>(this, R.layout.item_list, notes);
 
         notesListView.setAdapter(arrayAdapter);
         arrayAdapter.notifyDataSetChanged();

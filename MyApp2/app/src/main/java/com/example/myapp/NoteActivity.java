@@ -31,6 +31,8 @@ public class NoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.note);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         titleEditText = findViewById(R.id.titleEditText);
         contentEditText = findViewById(R.id.contentEditText);
         contentEditText.setInputType(InputType.TYPE_CLASS_TEXT);

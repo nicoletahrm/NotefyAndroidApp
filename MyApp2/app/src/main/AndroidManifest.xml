@@ -26,7 +26,8 @@
                 android:value="" />
         </activity>
 
-        <activity android:name=".NoteActivity">
+        <activity android:name=".NoteActivity"
+            android:parentActivityName=".HomeActivity">
         </activity>
 
     </application>

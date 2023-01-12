@@ -47,8 +47,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    //add new user for signup
-    public void addNote(Note note) {
+    //add new note
+    public boolean addNote(Note note) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cvNote = new ContentValues();
 
@@ -58,7 +58,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         long insert = db.insert(NOTE_TABLE, null, cvNote);
 
-        //return insert != -1;
+        return insert != -1;
     }
 
     //return notes list

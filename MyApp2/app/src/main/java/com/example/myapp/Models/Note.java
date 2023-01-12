@@ -11,7 +11,6 @@ public class Note implements Parcelable {
     private String title;
     private String content;
     private String date;
-    //private Boolean isPinned;
 
     public Note() {
 
@@ -73,12 +72,7 @@ public class Note implements Parcelable {
 
     @Override
     public String toString() {
-        return "Note{" +
-                "id=" + id + '\'' +
-                "title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", date=" + date +
-                '}';
+        return title;
     }
 
     @Override
