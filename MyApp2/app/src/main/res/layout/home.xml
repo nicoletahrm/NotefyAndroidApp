@@ -28,7 +28,7 @@
         <ListView
             android:id="@+id/notesListView"
             android:layout_width="match_parent"
-            android:layout_height="608dp"
+            android:layout_height="560dp"
             android:longClickable="true" />
 
         <Button
@@ -38,6 +38,15 @@
             android:insetLeft="150dp"
             android:insetRight="150dp"
             android:text="Create"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:insetLeft="150dp"
+            android:insetRight="150dp"
+            android:text="Search"
             android:textAlignment="center" />
 
     </LinearLayout>

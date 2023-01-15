@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 
 import com.example.myapp.Models.Note;
 
@@ -22,6 +23,7 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
 
     private ListView notesListView;
     private Button createNoteButton;
+    private Button searchButton;
 
     private DatabaseHelper dbHelper = new DatabaseHelper(HomeActivity.this);
 
@@ -32,6 +34,7 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
 
         notesListView = findViewById(R.id.notesListView);
         createNoteButton = findViewById(R.id.createNoteButton);
+        searchButton = findViewById(R.id.searchButton);
 
         registerForContextMenu(notesListView);
 
@@ -42,6 +45,14 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
                 myIntent.putExtra("isNoteSelected", false);
                 myIntent.putExtra("createButtonClick", true);
                 myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                startActivity(myIntent);
+            }
+        });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(HomeActivity.this, SearchActivity.class);
                 startActivity(myIntent);
             }
         });
@@ -80,7 +91,6 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.delete:
-
                 ArrayList<Note> notes = dbHelper.getAllNotes();
 
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();

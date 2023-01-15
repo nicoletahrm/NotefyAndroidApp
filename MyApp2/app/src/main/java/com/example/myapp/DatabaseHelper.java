@@ -122,4 +122,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return delete == -1;
     }
+
+    //find
+    public ArrayList<Note> findNotes(String title) {
+        ArrayList<Note> notes = new ArrayList<Note>();
+
+        String query =
+                "SELECT * FROM "
+                        + NOTE_TABLE
+                        + " WHERE "
+                        + TITLE_COLUMN
+                        + " LIKE \"%"
+                        + title
+                        + "%\"";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                Integer noteId = cursor.getInt(0);
+                String noteTitle = cursor.getString(1);
+                String noteContent = cursor.getString(2);
+                String noteDate = cursor.getString(3);
+
+                Note note = new Note(noteId, noteTitle, noteContent, noteDate);
+                notes.add(note);
+
+            }while(cursor.moveToNext());
+        }
+        else {
+        }
+
+        cursor.close();
+        db.close();
+
+        return notes;
+    }
 }
